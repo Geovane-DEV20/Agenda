@@ -38,6 +38,7 @@ namespace Agenda
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Agenda", Version = "v1" });
             });
+            
            
         }
 
@@ -52,6 +53,8 @@ namespace Agenda
             }
 
             app.UseHttpsRedirection();
+
+            app.UseStatusCodePages();
 
             app.UseRouting();
 
