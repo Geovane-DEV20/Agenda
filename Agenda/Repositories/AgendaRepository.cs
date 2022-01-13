@@ -1,37 +1,38 @@
 ﻿using Agenda.Interface;
-using System;
-using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Agenda.Models;
+using System;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Agenda.DataBase;
+using Agenda.Repositories;
 
 namespace Agenda.Repositories
 {
     public class AgendaRepository : IAgendaRepository
     {
-        public void Atualizar()
+        private readonly AgendaContext _context;
+        public AgendaRepository(AgendaContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
-
-        public void Cadastrar()
+        public void Cadastrar<T>(T entity) where T : class
         {
-            throw new NotImplementedException();
+            _context.Add(entity);
         }
-
-        public void Deletar()
+        public void Atualizar<T>(T entity) where T : class
         {
-            throw new NotImplementedException();
+            _context.Update(entity);
         }
-
-        public void Obter()
+        public void Remover<T>(T entity) where T : class
         {
-            throw new NotImplementedException();
+            _context.Remove(entity);
         }
-
-        public void ObterTodosDados()
+        public async Task<bool> SaveChangeAsync()
         {
-            throw new NotImplementedException();
+            return (await _context.SaveChangesAsync()) > 0;
         }
     }
 }

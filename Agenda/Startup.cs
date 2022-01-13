@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Agenda.DataBase;
+using Agenda.Interface;
+using Agenda.Repositories;
 
 namespace Agenda
 {
@@ -34,20 +36,17 @@ namespace Agenda
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
                 
-            /*
-            services.AddDbContext<AgendaContext>(opt => { opt.UseSqlite("Data source=Database\\Agenda.db"); });
-
-            services.AddMvc(); // reconhece as controllers da aplicação.
-            */
+            services.AddScoped<IAgendaRepository, AgendaRepository>();
             services.AddControllers();
-            
+
             services.AddSwaggerGen(c =>
             {
+                
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Agenda", Version = "v1" });
             });
-            
-           
+
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
