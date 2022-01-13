@@ -2,7 +2,7 @@
 
 namespace Agenda.Migrations
 {
-    public partial class BancoInicial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,11 +10,11 @@ namespace Agenda.Migrations
                 name: "Agendas",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Nome = table.Column<string>(type: "TEXT", nullable: true),
-                    Telefone = table.Column<int>(type: "INTEGER", nullable: false),
-                    Endereço = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Telefone = table.Column<int>(type: "int", nullable: false),
+                    Endereco = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

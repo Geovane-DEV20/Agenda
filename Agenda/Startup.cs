@@ -28,10 +28,17 @@ namespace Agenda
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<AgendaContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+                
+            /*
             services.AddDbContext<AgendaContext>(opt => { opt.UseSqlite("Data source=Database\\Agenda.db"); });
 
-            services.AddMvc();
-            
+            services.AddMvc(); // reconhece as controllers da aplicação.
+            */
             services.AddControllers();
             
             services.AddSwaggerGen(c =>
@@ -54,7 +61,7 @@ namespace Agenda
 
             app.UseHttpsRedirection();
 
-            app.UseStatusCodePages();
+            app.UseStatusCodePages(); // Um manipulador de resposta padrão que verifica as respostas com códigos de status entre 400 e 599 que não têm um corpo.
 
             app.UseRouting();
 

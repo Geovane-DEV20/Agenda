@@ -12,7 +12,6 @@ namespace Agenda.Controllers
     [Route("api/agenda")]
     public class AgendaController : ControllerBase
     {
-
         private readonly AgendaContext _banco;
         public AgendaController(AgendaContext banco)
         {
@@ -22,7 +21,7 @@ namespace Agenda.Controllers
         [Route("")]
         [HttpGet]
         //Ira retornar somente todos os dados (/api/agenda/1)
-        public ActionResult ObterTodosDados(int id)
+        public ActionResult ObterTodosDados(int id, Informacoes informacoes)
         {
             return Ok(_banco.Agendas);
         }
@@ -33,42 +32,43 @@ namespace Agenda.Controllers
         public ActionResult Obter(int id)
         {
             var obj = _banco.Agendas.Find(id);
-            
+
             if (obj == null)
             {
                 return NotFound(); //404 Not Found indica que o servidor não conseguiu encontrar o recurso solicitado.
             }
-           
+
             return Ok(_banco.Agendas.Find(id));
         }
 
-        [Route("")] 
+        [Route("")]
         [HttpPost]
         //Ira cadastrar uma nova pessoa na agenda. /api/agenda(POST: id, nome, telefone e endereço)
         //Adicionado o atributo FromBody que fica no corpo da requisição
-        public ActionResult Cadastrar([FromBody]Aggenda agenda)
+        public ActionResult Cadastrar([FromBody] Informacoes informacoes)
         {
-            _banco.Agendas.Add(agenda);
+
+            _banco.Agendas.Add(informacoes);
             _banco.SaveChanges();
 
-            return Created($"/api/agenda/{agenda.Id}", agenda);
+            return Created($"/api/agenda/{informacoes.Id}", informacoes);
         }
 
         [Route("{id}")]
-        [HttpPut]
+        [HttpPost]
         //Ira atualizar uma nova pessoa na agenda. /api/agenda/1(Put: id, nome, telefone e endereço)
-        public ActionResult Atualizar (int id, [FromBody]Aggenda agenda)
+        public ActionResult Atualizar(int id, [FromBody] Informacoes informacoes)
         {
 
-            var obj = _banco.Agendas.AsNoTracking().FirstOrDefault(a => a.Id == id );
+            var obj = _banco.Agendas.AsNoTracking().FirstOrDefault(a => a.Id == id);
 
             if (obj == null)
             {
                 return NotFound();
             }
 
-            agenda.Id = id;
-            _banco.Agendas.Update(agenda);
+            informacoes.Id = id;
+            _banco.Agendas.Update(informacoes);
             _banco.SaveChanges();
 
             return Ok("Atualizado com sucesso");
@@ -88,7 +88,7 @@ namespace Agenda.Controllers
 
             _banco.Agendas.Remove(_banco.Agendas.Find(id));
             _banco.SaveChanges();
-            return NoContent();
+            return NoContent(); //Indica que o servidor atendeu à solicitação com êxito e que não há conteúdo para enviar no corpo da carga útil da resposta
         }
 
     }

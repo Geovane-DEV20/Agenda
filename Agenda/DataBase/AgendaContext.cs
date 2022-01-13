@@ -5,15 +5,17 @@ using System.Threading.Tasks;
 using Agenda.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Agenda.DataBase 
+
+namespace Agenda.DataBase
 {
     public class AgendaContext : DbContext
     {
-        // Construtor padrão
-        public AgendaContext(DbContextOptions<AgendaContext> options) : base(options)
+        public AgendaContext()
         {
-                
         }
-        public DbSet<Aggenda> Agendas { get; set; }
+        public AgendaContext(DbContextOptions <AgendaContext> options) : base(options)
+        {
+        }
+        public DbSet<Informacoes> Agendas { get; set; }
     }
 }
