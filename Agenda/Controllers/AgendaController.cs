@@ -21,7 +21,7 @@ namespace Agenda.Controllers
 
         [Route("")]
         [HttpGet]
-        //Ira retornar somente todos os dados (/api/agenda/1)
+        //Ira retornar todos os dados (/api/agenda/1)
         public ActionResult ObterTodos(Informacoes informacoes)
         {
             var item = _repository.ObterTodos(informacoes);
@@ -64,16 +64,16 @@ namespace Agenda.Controllers
         [Route("{id}")]
         [HttpPost]
         //Ira atualizar uma nova pessoa na agenda. /api/agenda/1(Put: id, nome, telefone e endereço)
-        public ActionResult Atualizar(int id, [FromBody] Informacoes informacoes)
+        public ActionResult Atualizar([FromBody] Informacoes informacoes)
         {
-            var obj = _repository.Obter(id);
+            //var obj = _repository.Obter(id);
 
-            if (obj == null)
-            {
-                return NotFound();
-            }
+            //if (obj == null)
+            //{
+            //    return NotFound();
+            //}
 
-            informacoes.Id = id;
+            //informacoes.Id = id;
 
             _repository.Atualizar(informacoes);
 

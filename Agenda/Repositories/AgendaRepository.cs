@@ -44,6 +44,7 @@ namespace Agenda.Repositories
         public void Atualizar(Informacoes informacoes)
         {
             _banco.Agendas.Update(informacoes);
+            
             _banco.SaveChanges();
         }
         public void Deletar(int id)

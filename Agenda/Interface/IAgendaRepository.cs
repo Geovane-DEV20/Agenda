@@ -11,6 +11,7 @@ namespace Agenda.Interface
 {
     public interface IAgendaRepository
     {
+
         List<Informacoes> ObterTodos(Informacoes informacoes);
         Informacoes Obter(int id);
         void Cadastrar(Informacoes informacoes);
