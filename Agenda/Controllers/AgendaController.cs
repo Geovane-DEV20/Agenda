@@ -66,16 +66,8 @@ namespace Agenda.Controllers
         //Ira atualizar uma nova pessoa na agenda. /api/agenda/1(Put: id, nome, telefone e endereço)
         public ActionResult Atualizar([FromBody] Informacoes informacoes)
         {
-            //var obj = _repository.Obter(id);
 
-            //if (obj == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //informacoes.Id = id;
-
-            _repository.Atualizar(informacoes);
+           _repository.Atualizar(informacoes);
 
             return Ok("Atualizado com sucesso");
 
@@ -86,12 +78,8 @@ namespace Agenda.Controllers
         //Ira deletar uma pessoa na agenda. /api/agenda/1(Delete: id)
         public ActionResult Deletar(int id)
         {
-            var obj = _repository.Obter(id);
 
-            if (obj == null)
-            {
-                return NotFound();
-            }
+            _repository.Deletar(id);
             return NoContent(); //Indica que o servidor atendeu à solicitação com êxito e que não há conteúdo para enviar no corpo da carga útil da resposta
         }
     }
