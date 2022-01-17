@@ -30,19 +30,12 @@ namespace Agenda.Repositories
         public List<Informacoes> ObterTodos(Informacoes informacoes)
         {
             var item = _banco.Agendas.AsQueryable();
-            /*
-            if (pagRegistroPag.HasValue)
-            {
-                item = item.Skip((pagNumero.Value - 1) * pagRegistroPag.Value).Take(pagRegistroPag.Value);
-            }
-            */
             return item.ToList();
         }
         public Informacoes Obter(int id)
         {
             return _banco.Agendas.Find(id);
         }
-
         public void Cadastrar(Informacoes informacoes)
         {
             _banco.Agendas.Add(informacoes);
@@ -58,9 +51,5 @@ namespace Agenda.Repositories
             _banco.Agendas.Remove(_banco.Agendas.Find(id));
             _banco.SaveChanges();
         }
-
-
-
-
     }
 }

@@ -47,7 +47,7 @@ namespace Agenda.Controllers
         [HttpPost]
         //Ira cadastrar uma nova pessoa na agenda. /api/agenda(POST: id, nome, telefone e endereço)
         //Adicionado o atributo FromBody que fica no corpo da requisição
-        public IActionResult Cadastrar(Informacoes informacoes)
+        public IActionResult Cadastrar([FromBody]Informacoes informacoes)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace Agenda.Controllers
             _repository.Atualizar(informacoes);
 
             return Ok("Atualizado com sucesso");
-       
+
         }
 
         [Route("{id}")]
