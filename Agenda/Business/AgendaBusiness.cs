@@ -9,8 +9,11 @@ namespace Agenda.Business
 {
     public class AgendaBusiness
     {
-       
+        AgendaRepository agendaRepository = new AgendaRepository();
+        public AgendaBusiness()
+        {
 
+        }
 
 
     }

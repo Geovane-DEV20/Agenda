@@ -1,5 +1,4 @@
-﻿using Agenda.DataBase;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Agenda.Models;
 using System;
 using System.Collections.Generic;
@@ -7,27 +6,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Agenda.Interface;
+using Agenda.Repositories;
 
 namespace Agenda.Controllers
 {
     [Route("api/agenda")]
     public class AgendaController : ControllerBase
     {
-        private readonly IAgendaRepository _banco;
-        public AgendaController(IAgendaRepository banco)
+        private readonly IAgendaRepository _repository;
+        public AgendaController(IAgendaRepository repository)
         {
-            _banco = banco;
+            _repository = repository;
         }
 
         [Route("")]
         [HttpGet]
         //Ira retornar somente todos os dados (/api/agenda/1)
-        public ActionResult ObterTodosDados(int id, Informacoes informacoes)
+        public ActionResult ObterTodos(Informacoes informacoes)
         {
-            return Ok();
-            /*
-            return Ok(_banco.Agendas);
-            */
+            var item = _repository.ObterTodos(informacoes);
+            return Ok(item);
         }
 
         [Route("{id}")]
@@ -35,45 +33,32 @@ namespace Agenda.Controllers
         //Ira retornar somente um id (/api/agenda/1)
         public ActionResult Obter(int id)
         {
-            return Ok();
-            /*
-            var obj = _banco.Agendas.Find(id);
+            var obj = _repository.Obter(id);
 
             if (obj == null)
             {
                 return NotFound(); //404 Not Found indica que o servidor não conseguiu encontrar o recurso solicitado.
             }
 
-            return Ok(_banco.Agendas.Find(id));
-            */
+            return Ok(obj);
         }
 
         [Route("")]
         [HttpPost]
         //Ira cadastrar uma nova pessoa na agenda. /api/agenda(POST: id, nome, telefone e endereço)
         //Adicionado o atributo FromBody que fica no corpo da requisição
-        public async Task<IActionResult> Post(Informacoes informacoes)
+        public IActionResult Cadastrar(Informacoes informacoes)
         {
             try
             {
-                _banco.Cadastrar(informacoes);
-                
-                if (await _banco.SaveChangeAsync())
-                {
-                    
-                    return Created($"/api/agenda/{informacoes.Id}", informacoes);
-                }
-                else
-                {
-                    return BadRequest("Não Salvou");
-                }
+                _repository.Cadastrar(informacoes);
+                return Created($"/api/agenda/{informacoes.Id}", informacoes);
             }
+
             catch (Exception e)
             {
                 return BadRequest($"Erro {e}");
             }
-            
-
         }
 
         [Route("{id}")]
@@ -81,9 +66,7 @@ namespace Agenda.Controllers
         //Ira atualizar uma nova pessoa na agenda. /api/agenda/1(Put: id, nome, telefone e endereço)
         public ActionResult Atualizar(int id, [FromBody] Informacoes informacoes)
         {
-            return Ok();
-            /*
-            var obj = _banco.Agendas.AsNoTracking().FirstOrDefault(a => a.Id == id);
+            var obj = _repository.Obter(id);
 
             if (obj == null)
             {
@@ -91,11 +74,11 @@ namespace Agenda.Controllers
             }
 
             informacoes.Id = id;
-            _banco.Agendas.Update(informacoes);
-            _banco.SaveChanges();
+
+            _repository.Atualizar(informacoes);
 
             return Ok("Atualizado com sucesso");
-        */
+       
         }
 
         [Route("{id}")]
@@ -103,20 +86,13 @@ namespace Agenda.Controllers
         //Ira deletar uma pessoa na agenda. /api/agenda/1(Delete: id)
         public ActionResult Deletar(int id)
         {
-            return Ok();
-            /*
-            var obj = _banco.Agendas.Find(id);
+            var obj = _repository.Obter(id);
 
             if (obj == null)
             {
                 return NotFound();
             }
-
-            _banco.Agendas.Remove(_banco.Agendas.Find(id));
-            _banco.SaveChanges();
             return NoContent(); //Indica que o servidor atendeu à solicitação com êxito e que não há conteúdo para enviar no corpo da carga útil da resposta
-            */
         }
-
     }
 }

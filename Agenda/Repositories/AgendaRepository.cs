@@ -1,5 +1,6 @@
 ﻿using Agenda.Interface;
 using System.Linq;
+using Agenda.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Agenda.Models;
 using System;
@@ -8,31 +9,58 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Agenda.DataBase;
 using Agenda.Repositories;
+using Agenda.Business;
 
 namespace Agenda.Repositories
 {
     public class AgendaRepository : IAgendaRepository
     {
-        private readonly AgendaContext _context;
-        public AgendaRepository(AgendaContext context)
+        private readonly AgendaContext _banco;
+
+        //Construtor
+        public AgendaRepository(AgendaContext banco)
         {
-            _context = context;
+            _banco = banco;
         }
-        public void Cadastrar<T>(T entity) where T : class
+
+        public AgendaRepository()
         {
-            _context.Add(entity);
         }
-        public void Atualizar<T>(T entity) where T : class
+
+        public List<Informacoes> ObterTodos(Informacoes informacoes)
         {
-            _context.Update(entity);
+            var item = _banco.Agendas.AsQueryable();
+            /*
+            if (pagRegistroPag.HasValue)
+            {
+                item = item.Skip((pagNumero.Value - 1) * pagRegistroPag.Value).Take(pagRegistroPag.Value);
+            }
+            */
+            return item.ToList();
         }
-        public void Remover<T>(T entity) where T : class
+        public Informacoes Obter(int id)
         {
-            _context.Remove(entity);
+            return _banco.Agendas.Find(id);
         }
-        public async Task<bool> SaveChangeAsync()
+
+        public void Cadastrar(Informacoes informacoes)
         {
-            return (await _context.SaveChangesAsync()) > 0;
+            _banco.Agendas.Add(informacoes);
+            _banco.SaveChanges();
         }
+        public void Atualizar(Informacoes informacoes)
+        {
+            _banco.Agendas.Update(informacoes);
+            _banco.SaveChanges();
+        }
+        public void Deletar(int id)
+        {
+            _banco.Agendas.Remove(_banco.Agendas.Find(id));
+            _banco.SaveChanges();
+        }
+
+
+
+
     }
 }

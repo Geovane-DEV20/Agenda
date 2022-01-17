@@ -22,8 +22,8 @@ namespace Agenda.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("INTEGER");
+                        //.UseIdentityColumn();
 
                     b.Property<string>("Endereco")
                         .HasColumnType("nvarchar(max)");
