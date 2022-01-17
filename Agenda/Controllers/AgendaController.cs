@@ -14,6 +14,7 @@ namespace Agenda.Controllers
     public class AgendaController : ControllerBase
     {
         private readonly IAgendaRepository _repository;
+
         public AgendaController(IAgendaRepository repository)
         {
             _repository = repository;
@@ -67,8 +68,7 @@ namespace Agenda.Controllers
         public ActionResult Atualizar([FromBody] Informacoes informacoes)
         {
 
-           _repository.Atualizar(informacoes);
-
+            _repository.Atualizar(informacoes);
             return Ok("Atualizado com sucesso");
 
         }
@@ -78,9 +78,15 @@ namespace Agenda.Controllers
         //Ira deletar uma pessoa na agenda. /api/agenda/1(Delete: id)
         public ActionResult Deletar(int id)
         {
+            var obj = _repository.Obter(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
 
             _repository.Deletar(id);
             return NoContent(); //Indica que o servidor atendeu à solicitação com êxito e que não há conteúdo para enviar no corpo da carga útil da resposta
+            
         }
     }
 }
